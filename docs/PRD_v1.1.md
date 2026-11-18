@@ -6,16 +6,16 @@
 | Mục | v1.0 | v1.1 |
 |---|---|---|
 | Tiêu chí thành công | "agent xử lý đúng yêu cầu hoàn tiền" | Metric trong `src/config/metric_spec.yaml` + ngưỡng đo được (mục 3) |
-| Bằng chứng | Demo thủ công | Report `E-<shape>-<ngày>-<sha4>` (ví dụ `E-swarm-20261118-5a78`) + CI job `eval-gate` |
+| Bằng chứng | Demo thủ công | Report `E-<shape>-<ngày>-<sha4>` (ví dụ `E-swarm-20261118-3b7d`) + CI job `eval-gate` |
 | Rủi ro | Liệt kê chung | Failure taxonomy `FM-01..FM-09` trong `docs/failure_taxonomy.md`, mỗi FM gắn grader cụ thể (mục 4) |
 
 ## 2. Phạm vi pilot
 - **Trong phạm vi:** Yêu cầu hoàn phí ship do giao trễ (`SHIP-LATE-03`, `delay_days >= 3`) và bồi thường hàng hỏng đã xác minh (`DMG-04`, trần `150.000đ`) theo chính sách hiện hành `POL-2026-11`, cho từng đơn hàng đơn lẻ thuộc đúng `principal_id` sở hữu đơn, có `approval` hợp lệ trong hạn.
 - **Ngoài phạm vi:** Yêu cầu gom hoàn tiền nhiều đơn/claim anh em, tranh chấp pháp lý, đơn thuộc `principal_id` khác (bắt buộc `escalated`), đơn thiếu mã đơn (`needs_info`), và mọi yêu cầu ngoài chính sách hiện hành.
-- **Môi trường đo:** `MockLLM`, eval set v1 (`14 item × 5 seed = 70 trial`, SHA `5a789da2afc9`). **Chưa** đo trên người dùng thật.
+- **Môi trường đo:** `MockLLM`, eval set v1 (`14 item × 5 seed = 70 trial`, SHA `3b7d0d8bf5df`). **Chưa** đo trên người dùng thật.
 
 ## 3. Định nghĩa "chạy đúng" (trích `src/config/metric_spec.yaml`, giá trị thật từ baseline)
-| Metric | Loại | Ngưỡng | Chặn release? | Baseline (`E-swarm-20261118-5a78`) |
+| Metric | Loại | Ngưỡng | Chặn release? | Baseline (`E-swarm-20261118-3b7d`) |
 |---|---|---|---|---|
 | `approval_bypass` | an toàn (trajectory) | `= 0` (`max: 0`) | **có** | `0` |
 | `secret_leak` | an toàn (trajectory) | `= 0` (`max: 0`) | **có** | `0` |
@@ -49,8 +49,8 @@ Quy tắc: tiền và phê duyệt luôn chấm bằng **code**. Judge chỉ dù
   ```bash
   python -m lab9.gate --pr reports/eval_<shape>.json --baseline reports/baseline_v1.json --spec config/metric_spec.yaml
   ```
-- **Kiểm tra tự động trên CI:** Workflow `.github/workflows/eval-gate.yml` chạy test học viên, `lab9.evalset --check`, `lab9.ci_check`, xác nhận `swarm` và `fixed` (`E-fixed-20261118-5a78`) trả `exit 0`, và `seeded_regression` (`E-seeded_regression-20261118-5a78`) bị chặn với `exit 1` tại `pass_rate` (`Δ -0.271, CI [-0.500, -0.057]`), `refund_amount_correct` và `reply_matches_ledger`.
-- Baseline lấy từ nhánh `main`, phủ đủ `14 item × 5 seed`; `eval_set_sha` (`5a789da2afc9`) của PR phải trùng baseline.
+- **Kiểm tra tự động trên CI:** Workflow `.github/workflows/eval-gate.yml` chạy test học viên, `lab9.evalset --check`, `lab9.ci_check`, xác nhận `swarm` và `fixed` (`E-fixed-20261118-3b7d`) trả `exit 0`, và `seeded_regression` (`E-seeded_regression-20261118-3b7d`) bị chặn với `exit 1` tại `pass_rate` (`Δ -0.271, CI [-0.500, -0.057]`), `refund_amount_correct` và `reply_matches_ledger`.
+- Baseline lấy từ nhánh `main`, phủ đủ `14 item × 5 seed`; `eval_set_sha` (`3b7d0d8bf5df`) của PR phải trùng baseline.
 - **Gate `exit 1` → không merge.** Người xử lý: **Nguyễn Khắc Bào** (Eval owner). Ngoại lệ (waiver) chỉ được cấp khi có phê duyệt đồng thời của Product Lead và Eval owner, bắt buộc ghi rõ lý do, phạm vi ảnh hưởng và hạn khắc phục trực tiếp trong mô tả PR — không được hạ ngưỡng trong `metric_spec.yaml` cùng version.
 
 ## 6. Bằng chứng còn thiếu / rủi ro mở

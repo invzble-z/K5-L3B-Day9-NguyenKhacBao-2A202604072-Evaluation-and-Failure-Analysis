@@ -3,11 +3,11 @@
 Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
 
 - **Run ID / eval set SHA:**
-  - Baseline (`swarm`): `E-swarm-20261118-5a78` (`src/reports/baseline_v1.json`)
-  - Candidate tốt (`fixed`): `E-fixed-20261118-5a78` (`src/reports/eval_fixed.json`)
-  - Candidate lỗi (`seeded_regression`): `E-seeded_regression-20261118-5a78` (`src/reports/eval_seeded_regression.json`)
-  - Eval set SHA: `5a789da2afc9`
-- **Phiên bản:** code commit `512b440` · eval set `v1` (`sha 5a789da2afc9`) · `metric_spec_version: "1.0"` · grader commit `6d4515e` · seeds `11 / 22 / 33 / 44 / 55` · `MockLLM` (Python 3.12.0)
+  - Baseline (`swarm`): `E-swarm-20261118-3b7d` (`src/reports/baseline_v1.json`)
+  - Candidate tốt (`fixed`): `E-fixed-20261118-3b7d` (`src/reports/eval_fixed.json`)
+  - Candidate lỗi (`seeded_regression`): `E-seeded_regression-20261118-3b7d` (`src/reports/eval_seeded_regression.json`)
+  - Eval set SHA: `3b7d0d8bf5df`
+- **Phiên bản:** code commit `512b440` · eval set `v1` (`sha 3b7d0d8bf5df`) · `metric_spec_version: "1.0"` · grader commit `6d4515e` · seeds `11 / 22 / 33 / 44 / 55` · `MockLLM` (Python 3.12.0)
 - **Eval set:** `v1`, `14 item × 5 seed = 70 trial`, nguồn `lab8_public` (`src/data/eval/eval_set_v1.jsonl`); nhãn tách riêng ở `src/data/eval/labels_v1.json` (0 lỗi khi chạy `lab9.evalset --check`).
 - **Metric & ngưỡng (trích `src/config/metric_spec.yaml`):**
   - Safety (`blocking: true`): `approval_bypass` (`max: 0`), `secret_leak` (`max: 0`).
@@ -15,7 +15,7 @@ Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
   - Theo dõi (`blocking: false`): `db_fact_kept` (`min: 0.95`), `pass_5` (`min: 0.80`), `cost_per_success` (`max_increase: 0.10`).
 - **Kết quả baseline vs PR (paired bootstrap 95% CI, `n_resamples=1000`, `rng=2027`):**
 
-| Metric | Baseline `swarm` (`E-swarm-20261118-5a78`) | PR `fixed` (`E-fixed-20261118-5a78`) | Δ & 95% CI (`fixed − base`) | PR `seeded_regression` (`E-seeded_regression-20261118-5a78`) | Δ & 95% CI (`reg − base`) | Kết luận Gate |
+| Metric | Baseline `swarm` (`E-swarm-20261118-3b7d`) | PR `fixed` (`E-fixed-20261118-3b7d`) | Δ & 95% CI (`fixed − base`) | PR `seeded_regression` (`E-seeded_regression-20261118-3b7d`) | Δ & 95% CI (`reg − base`) | Kết luận Gate |
 |---|---|---|---|---|---|---|
 | `approval_bypass` | `0` | `0` | — | `0` | — | `fixed` ok · `reg` ok |
 | `secret_leak` | `0` | `0` | — | `0` | — | `fixed` ok · `reg` ok |
