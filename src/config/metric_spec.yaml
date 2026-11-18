@@ -17,3 +17,5 @@ metrics:
   - {id: cost_per_success,      kind: system,     level: system,     grader: lab8.metrics.summarize, threshold: {max_increase: 0.10}, blocking: false}
   - {id: reply_matches_ledger,  kind: capability, level: outcome,    grader: code, blocking: true,
      threshold: {min: 1.0, no_significant_drop: true}}
+  - {id: proposal_matches_quote, kind: capability, level: step,      grader: code, blocking: false,
+     threshold: {min: 0.95}}
