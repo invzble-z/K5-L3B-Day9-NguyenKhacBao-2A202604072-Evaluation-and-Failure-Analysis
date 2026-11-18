@@ -104,6 +104,20 @@ class ReplyMatchesLedger(Evaluator[Any, Trial]):
         return EvaluationReason(value=True, reason=None)
 
 
+@dataclass
+class ProposalMatchesQuote(Evaluator[Any, Trial]):
+    """Step level (FM-05/FM-04): proposal must equal the official quote (catches pre-deduction before host)."""
+
+    def evaluate(self, ctx: EvaluatorContext[Any, Trial]) -> EvaluationReason:
+        quotes = [e.get("payload") or {} for e in (ctx.output.get("events") or []) if e.get("kind") == "quote"]
+        if not quotes:
+            return EvaluationReason(value=True, reason=None)
+        quoted = int(quotes[-1].get("amount_vnd") or 0)
+        proposed = int((ctx.output.get("result") or {}).get("proposal_amount") or 0)
+        ok = proposed == quoted
+        return EvaluationReason(value=ok, reason=None if ok else f"proposal={proposed} != quote={quoted}")
+
+
 # Order matters only for display. Names here are the metric ids in config/metric_spec.yaml.
 GRADERS: dict[str, type[Evaluator]] = {
     "pass_rate": TrialPass,
@@ -112,4 +126,5 @@ GRADERS: dict[str, type[Evaluator]] = {
     "refund_amount_correct": RefundAmountCorrect,
     "db_fact_kept": DbFactKept,
     "reply_matches_ledger": ReplyMatchesLedger,
+    "proposal_matches_quote": ProposalMatchesQuote,
 }

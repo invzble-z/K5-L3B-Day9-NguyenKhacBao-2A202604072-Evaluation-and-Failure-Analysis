@@ -1,0 +1,3 @@
+# Ensure eval set files keep LF newlines across Windows and Linux CI so eval_set_sha matches.
+src/data/eval/*.jsonl text eol=lf
+src/data/eval/*.json text eol=lf
